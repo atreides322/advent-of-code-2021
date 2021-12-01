@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from functools import reduce
+
 
 def main():
 
@@ -9,7 +9,7 @@ def main():
         sys.exit(f"Usage: {sys.argv[0]} input_file")
 
     with open(sys.argv[1]) as input:
-        numbers = [ int(x) for x in input.readlines()]
+        numbers = [int(x) for x in input.readlines()]
 
     if not numbers:
         return
@@ -19,7 +19,7 @@ def main():
 
     for number in numbers[1:]:
         if number > previous:
-            count+=1
+            count += 1
         previous = number
 
     print(count)

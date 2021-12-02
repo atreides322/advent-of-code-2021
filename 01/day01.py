@@ -12,34 +12,19 @@ def main():
     with open(sys.argv[1]) as input:
         numbers = [int(x) for x in input.readlines()]
 
-    single_increase(numbers)
-    sliding_window(numbers)
+    sliding_window(numbers, window_size=1)
+    sliding_window(numbers, window_size=3)
 
 
-def single_increase(numbers):
-    if not numbers:
+def sliding_window(numbers, window_size):
+    if len(numbers) <= window_size:
         return
 
     count = 0
-    previous = numbers[0]
-
-    for number in numbers[1:]:
-        if number > previous:
-            count += 1
-        previous = number
-
-    print(f"Single: {count}")
-
-
-def sliding_window(numbers):
-    if len(numbers) < 4:
-        return
-
-    count = 0
-    window = deque(numbers[0:3])
+    window = deque(numbers[0:window_size])
     previous = sum(window)
 
-    for number in numbers[3:]:
+    for number in numbers[window_size:]:
         window.popleft()
         window.append(number)
 
@@ -50,7 +35,7 @@ def sliding_window(numbers):
 
         previous = current
 
-    print(f"Sliding Window: {count}")
+    print(f"Sliding Window Size: {window_size}\tSum: {count}")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from collections import deque
 
 
 def main():
@@ -11,6 +12,11 @@ def main():
     with open(sys.argv[1]) as input:
         numbers = [int(x) for x in input.readlines()]
 
+    single_increase(numbers)
+    sliding_window(numbers)
+
+
+def single_increase(numbers):
     if not numbers:
         return
 
@@ -22,7 +28,29 @@ def main():
             count += 1
         previous = number
 
-    print(count)
+    print(f"Single: {count}")
+
+
+def sliding_window(numbers):
+    if len(numbers) < 4:
+        return
+
+    count = 0
+    window = deque(numbers[0:3])
+    previous = sum(window)
+
+    for number in numbers[3:]:
+        window.popleft()
+        window.append(number)
+
+        current = sum(window)
+
+        if current > previous:
+            count += 1
+
+        previous = current
+
+    print(f"Sliding Window: {count}")
 
 
 if __name__ == "__main__":

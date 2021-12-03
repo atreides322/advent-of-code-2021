@@ -11,27 +11,24 @@ def main():
     with open(sys.argv[1]) as input:
         directions = input.readlines()
 
-    horizontal = find_horizontal(directions)
-    vertical = find_vertical(directions)
+    aim = 0
+    vertical = 0
+    horizontal = 0
 
-    print(horizontal * vertical)
+    for direction, magnitude in [x.split() for x in directions]:
+        magnitude = int(magnitude)
 
+        if direction == 'down':
+            aim += magnitude
+        elif direction == 'up':
+            aim -= magnitude
+        elif direction == 'forward':
+            horizontal += magnitude
+            vertical += magnitude * aim
+        else:
+            raise ValueError(f'Invalid direction {direction}')
 
-def find_vertical(directions):
-    return filter_steps(directions, positive='down', negative='up')
-
-
-def find_horizontal(directions):
-    return filter_steps(directions, positive='forward', negative='backward')
-
-
-def filter_steps(directions, positive, negative):
-    filtered = [x for x in directions
-                if x.startswith(positive) or x.startswith(negative)]
-    filtered = [int(x.split()[1]) * (1 if x.startswith(positive) else -1)
-                for x in filtered]
-
-    return(sum(filtered))
+    print(vertical * horizontal)
 
 
 if __name__ == "__main__":

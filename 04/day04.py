@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from copy import deepcopy
+from copy import copy, deepcopy
 from itertools import chain
 
 from colors import color
@@ -67,16 +67,24 @@ def main():
 
     bingo = False
     for number in number_pulls:
-        for puzzle in puzzles:
+        for puzzle in copy(puzzles):
             score = puzzle.pulled(number)
 
             if score is not None:
-                bingo = True
-                print(puzzle)
-                print('Score:', score)
+                puzzles.remove(puzzle)
 
-        if bingo:
-            break
+                if not bingo:
+                    print('First bingo:')
+                    print(puzzle)
+                    print('Score:', score)
+
+                if not puzzles:
+                    print()
+                    print('Last bingo:')
+                    print(puzzle)
+                    print('Score:', score)
+
+                bingo = True
 
 
 def read_puzzles(lines):

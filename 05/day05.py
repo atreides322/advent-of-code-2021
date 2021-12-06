@@ -28,15 +28,26 @@ def main():
     sums = [[0] * (max_x+1) for x in range(max_y+1)]
 
     for line in lines:
-        if line[0][0] == line[1][0] or line[0][1] == line[1][1]:
-            from_x = min(line[0][0], line[1][0])
-            to_x = max(line[0][0], line[1][0])
-            from_y = min(line[0][1], line[1][1])
-            to_y = max(line[0][1], line[1][1])
+        x1 = line[0][0]
+        y1 = line[0][1]
+        x2 = line[1][0]
+        y2 = line[1][1]
 
-            for y in range(from_y, to_y+1):
-                for x in range(from_x, to_x+1):
+        dx = x2 - x1
+        dy = y2 - y1
+
+        dx_inc = 1 if dx >= 0 else -1
+        dy_inc = 1 if dy >= 0 else -1
+
+        if x1 == x2 or y1 == y2:
+            for y in range(y1, y2 + dy_inc, dy_inc):
+                for x in range(x1, x2 + dx_inc, dx_inc):
                     sums[y][x] += 1
+        elif abs(dx) == abs(dy):
+            for offset in range(0, abs(dx)+1):
+                x = x1 + dx_inc * offset
+                y = y1 + dy_inc * offset
+                sums[y][x] += 1
 
     for row in sums:
         for value in row:

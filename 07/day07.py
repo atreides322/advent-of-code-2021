@@ -20,7 +20,9 @@ def main():
     for destination in range(first, last):
         fuel = 0
         for sub in positions:
-            fuel += abs(sub - destination)
+            distance = abs(sub - destination)
+            if distance:
+                fuel += (distance * (distance + 1))//2
 
         if fuel < best:
             best = fuel

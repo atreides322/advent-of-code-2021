@@ -11,11 +11,18 @@ def main():
         '<': '>'
     }
 
-    score = {
+    compiler_points = {
         ')': 3,
         ']': 57,
         '}': 1197,
         '>': 25137
+    }
+
+    autocomplete_points = {
+        ')': 1,
+        ']': 2,
+        '}': 3,
+        '>': 4
     }
 
     if len(sys.argv) != 2:
@@ -25,9 +32,11 @@ def main():
         subsystems = input.readlines()
 
     illegal = []
+    autocomplete = []
 
     for subsystem in subsystems:
         stack = []
+        corrupt = False
         for symbol in subsystem.strip():
             if symbol in group.keys():
                 stack.append(symbol)
@@ -35,9 +44,20 @@ def main():
                 stack.pop()
             else:
                 illegal.append(symbol)
+                corrupt = True
                 break
 
-    print(sum(score[symbol] for symbol in illegal))
+        if not corrupt:
+            score = 0
+            for symbol in reversed(stack):
+                score *= 5
+                score += autocomplete_points[group[symbol]]
+
+            if score:
+                autocomplete.append(score)
+
+    print('Compiler:', sum(compiler_points[symbol] for symbol in illegal))
+    print('Autocomplete:', sorted(autocomplete)[len(autocomplete)//2])
 
 
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ import sys
 
 
 debug = False
-iterations = 100
 
 
 def main():
@@ -19,19 +18,21 @@ def main():
     if debug:
         print_octopodes(octopodes)
 
-    flashes = 0
-
-    for _ in range(iterations):
+    step = 0
+    while True:
         octopodes = run_step(octopodes)
-
-        flashes += len([octopus for row in octopodes
-                        for octopus in row if octopus == 0])
+        flashes = len([octopus for row in octopodes
+                       for octopus in row if octopus == 0])
 
         if debug:
             print()
             print_octopodes(octopodes)
 
-    print('Flashes:', flashes)
+        if flashes == 100:
+            print('First Sync:', step + 1)
+            break
+
+        step += 1
 
 
 def run_step(octopodes):
